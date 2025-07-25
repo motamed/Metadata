@@ -1,3 +1,11 @@
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$PoolName,
+    
+    [Parameter(Mandatory=$true)]
+    [string]$ProjectName
+)
+
 # Fetch metadata
 $metadata = Invoke-RestMethod `
   -Headers @{Metadata="true"} `
@@ -14,6 +22,8 @@ $jsonPayload = @{
     resourceGroup = $metadata.compute.resourceGroupName
     location = $metadata.compute.location
     timestamp = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
+    poolname = $PoolName
+    projectname = $ProjectName
 } | ConvertTo-Json -Depth 2
 
 Write-Host "`nJSON Payload:" -ForegroundColor Yellow
