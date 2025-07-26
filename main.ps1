@@ -9,9 +9,18 @@ param(
     [string]$URL
 )
 
+# Fetch metadata 
+$metadata = Invoke-RestMethod `
+  -Headers @{Metadata="true"} `
+  -Method GET `
+  -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
+
+# Extract computer name from metadata
+$computerName = $metadata.compute.osProfile.computerName
 
 # Create JSON payload for the POST request
 $jsonPayload = @{
+    computerName = $computerName
     poolname = $PoolName
     projectname = $ProjectName
 } | ConvertTo-Json -Depth 2
@@ -28,6 +37,8 @@ try {
     
     # Make the POST request
     $response = Invoke-RestMethod -Uri $endpointUrl -Method Post -Body $jsonPayload -Headers $headers
+
+    $response | ConvertTo-Json -Depth 3 | Write-Host
     
 } catch {
     Write-Error "Failed to send POST request: $($_.Exception.Message)"
