@@ -1,6 +1,13 @@
+
+param(
+
+    [Parameter(Mandatory=$true)]
+    [string]$URL
+)
+
 $PoolName = $env:POOL_NAME
 $ProjectName = $env:PROJECT_NAME
-$URL = $env:ENDPOINT_URL
+
 
 # Fetch metadata 
 $metadata = Invoke-RestMethod `
