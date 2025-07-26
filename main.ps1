@@ -3,7 +3,7 @@ param(
     [string]$PoolName,
     
     [Parameter(Mandatory=$true)]
-    [string]$ProjectName
+    [string]$ProjectName,
 
     [Parameter(Mandatory=$true)]
     [string]$URL
