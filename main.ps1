@@ -5,8 +5,13 @@ param(
     [string]$URL
 )
 
-$PoolName = $env:POOL_NAME
-$ProjectName = $env:PROJECT_NAME
+# $PoolName = $env:POOL_NAME
+# $ProjectName = $env:PROJECT_NAME
+
+# Get machine-level environment variables
+$machinePath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+$PoolName  = Get-ItemProperty -Path $machinePath -Name "POOL_NAME" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty "POOL_NAME"
+$ProjectName = Get-ItemProperty -Path $machinePath -Name "PROJECT_NAME" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty "PROJECT_NAME"
 
 
 # Fetch metadata 
